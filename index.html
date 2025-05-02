@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Kelulusan Siswa</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f0f8ff;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #ecf0f1;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error {
+            color: red;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cek Kelulusan</h1>
+        <input type="text" id="nisnInput" placeholder="Masukkan NISN">
+        <button onclick="cekKelulusan()">Cek Kelulusan</button>
+        
+        <div id="result" class="result">
+            <h2>SELAMAT!</h2>
+            <p><strong>Nama Siswa:</strong> <span id="namaSiswa"></span></p>
+            <p><strong>NISN:</strong> <span id="nisnResult"></span></p>
+        </div>
+        
+        <div id="error" class="error"></div>
+    </div>
+
+    <script>
+        // Mock database siswa
+        const databaseSiswa = {
+            "1234567890": "Andi Prasetyo",
+            "0987654321": "Budi Santoso",
+            "1122334455": "Cindy Lestari"
+        };
+
+        function cekKelulusan() {
+            const nisn = document.getElementById('nisnInput').value.trim();
+            const resultDiv = document.getElementById('result');
+            const namaSiswa = document.getElementById('namaSiswa');
+            const nisnResult = document.getElementById('nisnResult');
+            const errorDiv = document.getElementById('error');
+
+            // Reset
+            resultDiv.style.display = 'none';
+            errorDiv.textContent = '';
+
+            if (!nisn) {
+                errorDiv.textContent = 'NISN tidak boleh kosong!';
+                return;
+            }
+
+            if (databaseSiswa[nisn]) {
+                // Tampilkan hasil
+                namaSiswa.textContent = databaseSiswa[nisn];
+                nisnResult.textContent = nisn;
+                resultDiv.style.display = 'block';
+                
+                // Efek confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            } else {
+                errorDiv.textContent = 'NISN tidak ditemukan dalam database!';
+            }
+        }
+    </script>
+</body>
+</html>
